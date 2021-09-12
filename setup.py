@@ -4,11 +4,11 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="example-pkg-YOUR-USERNAME-HERE",
+    name="PyRevoltApi",
     version="0.0.1",
-    author="Example Author",
-    author_email="author@example.com",
-    description="A small example package",
+    author="gresm",
+    author_email="not now",
+    description="Package that handles Revolt api",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/gresm/PyRevoltApp",
