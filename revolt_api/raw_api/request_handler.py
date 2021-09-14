@@ -1,18 +1,17 @@
 from __future__ import annotations
 from threading import Thread
 from typing import Any
+from types import FunctionType
 
 import requests as rq
 
 
+from .. import api_error
+
+
 __all__ = [
-    "RequestError",
     "RequestThread"
 ]
-
-
-class RequestError(Exception):
-    pass
 
 
 class RequestThread(Thread):
@@ -37,22 +36,21 @@ class RequestThread(Thread):
         self.start()
         return self.result
 
+    def fail(self):
+        self.failed = True
+        self.running = False
+
+    fail: FunctionType
+
+    @api_error(fail)
     def run(self) -> None:
         self.running = True
-        try:
-            self.result = rq.request(
-                self.method, self.url,
-                params=self.params, data=self.data,
-                headers=self.headers, json=self.json
-            )
-        except rq.RequestException as e:
-            self.failed = True
-            raise RequestError(e)
-        finally:
-            self.running = False
+        self.result = rq.request(
+            self.method, self.url,
+            params=self.params, data=self.data,
+            headers=self.headers, json=self.json
+        )
 
+    @api_error()
     def response_json(self):
-        try:
-            return self.result.json()
-        except Exception as e:
-            raise RequestError(e)
+        return self.result.json()
