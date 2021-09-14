@@ -1,9 +1,16 @@
 from __future__ import annotations
 import re
 
+from . import RequestThread
+
+
+__all__ = [
+    "make_request_to"
+]
+
 
 def _make_request(url: str, method: str, headers: dict):
-    pass
+    return RequestThread(url, method, headers)
 
 
 def _is_arg(el: str, signature: str, regex: str):
