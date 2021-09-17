@@ -1,3 +1,7 @@
+class Platform:
+    pass
+
+
 class Auth:
     pass
 
@@ -20,3 +24,14 @@ class Server:
 
 class Miscellaneous:
     pass
+
+
+__all__ = [
+    "Platform",
+    "Auth",
+    "User",
+    "Bot",
+    "Channel",
+    "Server",
+    "Miscellaneous"
+]

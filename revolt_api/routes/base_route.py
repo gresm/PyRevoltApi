@@ -38,5 +38,6 @@ def run_route(route: Route, token: str = None, json: dict | None = None, as_bot:
 
 
 __all__ = [
-
+    "Route",
+    "run_route"
 ]
