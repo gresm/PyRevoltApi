@@ -49,6 +49,8 @@ class RequestThread(Thread):
             params=self.params, data=self.data,
             headers=self.headers, json=self.json
         )
+        self.running = False
+        self.finished = True
 
     @api_error()
     def response_json(self):

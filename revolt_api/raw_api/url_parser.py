@@ -19,16 +19,25 @@ def _is_arg(el: str, signature: str, regex: str):
     return compiled is not None and compiled.string == el
 
 
+def _fix_kwargs(kwargs: dict[str, str], fix_format: str = ":~"):
+    new_kwargs = {}
+
+    for ind in kwargs:
+        new_kwargs[fix_format.replace("~", ind)] = kwargs[ind]
+
+    return new_kwargs
+
+
 def convert_url(local_url: str, global_url: str = "https://api.revolt.chat", *args: str,
                 url_args: list[str] | tuple[str] = None, url_kwargs: dict[str, str] = None, __arg_signature: str = ":",
-                __arg_regex: str = r"~\S+", **kwargs: str):
+                __arg_regex: str = r"~\S+", __reverse_format: str = ":~", **kwargs: str):
     url_args = url_args if url_args else ()
     args += tuple(url_args)
     url_args = args
 
     url_kwargs = url_kwargs if url_kwargs else {}
     kwargs.update(url_kwargs)
-    url_kwargs = kwargs
+    url_kwargs = _fix_kwargs(kwargs, __reverse_format)
 
     url_lst = local_url.split("/")
     found_ind = 0

@@ -8,7 +8,7 @@ with open("requirements.txt", "r", encoding="utf-8") as fr:
 
 setuptools.setup(
     name="PyRevoltApi",
-    version="0.0.1",
+    version="0.0.2",
     author="gresm",
     author_email="not now",
     description="Package that handles Revolt api",
