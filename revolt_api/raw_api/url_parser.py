@@ -1,3 +1,10 @@
+"""
+url_parser - file to convert template url to valid url
+example:
+
+>>> convert_url("servers/:server", server="some_tag")
+https://api.revolt.chat/servers/some_tag
+"""
 from __future__ import annotations
 import re
 
@@ -28,12 +35,22 @@ def _fix_kwargs(kwargs: dict[str, str], fix_format: str = ":~"):
     return new_kwargs
 
 
-def convert_url(local_url: str, global_url: str = "https://api.revolt.chat", *args: str,
+def convert_url(local_url: str, global_url: str = "https://api.revolt.chat",
                 url_args: list[str] | tuple[str] = None, url_kwargs: dict[str, str] = None, __arg_signature: str = ":",
                 __arg_regex: str = r"~\S+", __reverse_format: str = ":~", **kwargs: str):
+    """
+    Converts url
+    :param local_url: url argument - string
+    :param global_url: base url - optional
+    :param url_args: for changing url fields - optional tuple[str, ...]
+    :param url_kwargs: for changing url fields - optional dict[str, str]
+    :param __arg_signature: for custom definition of field - str
+    :param __arg_regex: regex string to detect url fields (tilde is replaced to __arg_signature) - str
+    :param __reverse_format: string to reverse format field (tilde is replaced to field name) - str
+    :param kwargs: for easier usage (is merged with url_kwargs) - dict[str, str]
+    :return: fixed url - string
+    """
     url_args = url_args if url_args else ()
-    args += tuple(url_args)
-    url_args = args
 
     url_kwargs = url_kwargs if url_kwargs else {}
     kwargs.update(url_kwargs)
@@ -60,6 +77,20 @@ def make_request_to(
         local_url: str, method: str, headers: dict, base_url: str = "https://api.revolt.chat", *args: str,
         url_args: list[str] | tuple[str] = None, url_kwargs: dict[str, str] = None,
         __arg_signature: str = ":", __arg_regex: str = r"~\S+", **kwargs):
+    """
+    Deprecated, but not removed
+    :param local_url:
+    :param method:
+    :param headers:
+    :param base_url:
+    :param args:
+    :param url_args:
+    :param url_kwargs:
+    :param __arg_signature:
+    :param __arg_regex:
+    :param kwargs:
+    :return:
+    """
     return _make_request(
         convert_url(local_url, url_args=url_args, url_kwargs=url_kwargs, __arg_signature=__arg_signature,
                     __arg_regex=__arg_regex, global_url=base_url, *args, **kwargs),
