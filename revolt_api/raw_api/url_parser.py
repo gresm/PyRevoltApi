@@ -3,9 +3,9 @@ import re
 
 from . import RequestThread
 
-
 __all__ = [
-    "make_request_to"
+    "make_request_to",
+    "convert_url"
 ]
 
 
@@ -19,9 +19,9 @@ def _is_arg(el: str, signature: str, regex: str):
     return compiled is not None and compiled.string == el
 
 
-def _convert_url(local_url: str, global_url: str = "https://api.revolt.chat", /, *args: str,
-                 url_args: list[str] | tuple[str] = None, url_kwargs: dict[str, str] = None, __arg_signature: str = ":",
-                 __arg_regex: str = r"~\S+", **kwargs: str):
+def convert_url(local_url: str, global_url: str = "https://api.revolt.chat", *args: str,
+                url_args: list[str] | tuple[str] = None, url_kwargs: dict[str, str] = None, __arg_signature: str = ":",
+                __arg_regex: str = r"~\S+", **kwargs: str):
     url_args = url_args if url_args else ()
     args += tuple(url_args)
     url_args = args
@@ -48,16 +48,11 @@ def _convert_url(local_url: str, global_url: str = "https://api.revolt.chat", /,
 
 
 def make_request_to(
-        local_url: str, method: str, headers: dict, base_url: str = "https://api.revolt.chat", /, *args: str,
+        local_url: str, method: str, headers: dict, base_url: str = "https://api.revolt.chat", *args: str,
         url_args: list[str] | tuple[str] = None, url_kwargs: dict[str, str] = None,
         __arg_signature: str = ":", __arg_regex: str = r"~\S+", **kwargs):
     return _make_request(
-        _convert_url(
-            local_url,
-            *args,
-            global_url=base_url, url_args=url_args, url_kwargs=url_kwargs,
-            __arg_signature=__arg_signature, __arg_regex=__arg_regex,
-            *kwargs
-        ),
+        convert_url(local_url, url_args=url_args, url_kwargs=url_kwargs, __arg_signature=__arg_signature,
+                    __arg_regex=__arg_regex, global_url=base_url, *args, **kwargs),
         method, headers
     )

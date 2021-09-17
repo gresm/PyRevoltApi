@@ -3,6 +3,9 @@ import setuptools
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
+with open("requirements.txt", "r", encoding="utf-8") as fr:
+    install_requires = fh.read().split()
+
 setuptools.setup(
     name="PyRevoltApi",
     version="0.0.1",
@@ -18,7 +21,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    package_dir={"": "src"},
-    packages=setuptools.find_packages(where="src"),
+    packages=setuptools.find_packages(include=['revolt_api']),
     python_requires=">=3.6",
+    install_requires=install_requires
 )

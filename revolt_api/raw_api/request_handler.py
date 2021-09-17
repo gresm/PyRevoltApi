@@ -34,7 +34,6 @@ class RequestThread(Thread):
         self.data = data
         self.json = json
         self.start()
-        return self.result
 
     def fail(self):
         self.failed = True
