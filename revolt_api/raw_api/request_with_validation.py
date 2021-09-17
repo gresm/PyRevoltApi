@@ -58,3 +58,6 @@ class ValidatedRequest:
         self.request_ref = RequestThread(url, method, self.headers, params, data, json)
         self.request_ref.start()
         return self.request_ref
+
+    def join(self, timeout: float | None = None):
+        self.request_ref.join(timeout)
