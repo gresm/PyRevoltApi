@@ -4,22 +4,16 @@ Clearer api for json_validator
 
 from __future__ import annotations
 
-from validator import *
-
-
-class Element:
-    def __init__(self, val):
-        self.val = val
-        self.flags = None
-        self.has_flags = False
+from .validator import *
 
 
 class FlagFactory:
-    def __init__(self, flag_tag: str):
+    def __init__(self, flag_tag: str, configs: tuple = None):
         self.flag_tag = flag_tag
+        self.configs = configs if configs is not None else []
 
-    def __call__(self, data):
-        return self.generate_flag(data)
+    def __call__(self, *data):
+        return self.new_configs(data)
 
     def __rlshift__(self, other):
         return self.generate_flag(other)
@@ -38,6 +32,9 @@ class FlagFactory:
 
         return self._get_raw_flag(flags if flags is not None else [], data)
 
+    def new_configs(self, configs: tuple):
+        return self.__class__(self.flag_tag, configs)
+
 
 _FLAG_TAGS = ArrayValidator[str]
 
@@ -50,5 +47,46 @@ class Flag:
         self._sub_tags = sub_tags
         self.tags = self._sub_tags + [self.tag]
 
+    def __hash__(self):
+        return hash(id(self))
 
-TEST_FLAG = FlagFactory["test"]
+
+def convert(value):
+    def convert_with_correct(data):
+        if isinstance(data, dict):
+            return convert_dict(data)
+        elif isinstance(data, list):
+            return convert_list(data)
+        elif isinstance(data, str):
+            return convert_string(data)
+        elif isinstance(data, int):
+            return convert_int(data)
+        elif isinstance(data, float):
+            return convert_float(data)
+        elif isinstance(data, bool):
+            return convert_bool(data)
+        elif isinstance(data, LITERAL_TYPES):
+            return data
+
+    def convert_dict(data):
+        pass
+
+    def convert_list(data):
+        pass
+
+    def convert_array(data):
+        pass
+
+    def convert_string(data):
+        pass
+
+    def convert_int(data):
+        pass
+
+    def convert_float(data):
+        pass
+
+    def convert_bool(data):
+        return type(data)
+
+    return convert_with_correct(value)

@@ -343,4 +343,6 @@ __all__ = [
     "StringValidator",
     "ExactListValidator",
     "ArrayValidator",
+    "LITERALS",
+    "LITERAL_TYPES"
 ]
