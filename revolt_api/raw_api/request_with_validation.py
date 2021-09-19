@@ -11,7 +11,7 @@ __all__ = [
 
 
 class ValidatedRequest:
-    @api_error(cause="Missing token when auth enabled")
+    @api_error(cause="Invalid arguments given")
     def __init__(self, is_bot: bool, with_auth: bool = True, validation_token: str = "",
                  url: str = "https://api.revolt.chat/", method: str = "GET",):
         self.validation_token = validation_token
@@ -20,7 +20,7 @@ class ValidatedRequest:
         self.method = method
         self.with_auth = with_auth
         self.request_ref: RequestThread | None = None
-        assert not with_auth or validation_token
+        assert not with_auth or validation_token, "Missing token when auth enabled"
 
     @property
     def headers(self):
