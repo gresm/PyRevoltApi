@@ -19,7 +19,13 @@ class FlagFactory:
         self.flag_tag = flag_tag
 
     def __call__(self, data):
-        pass
+        return self.generate_flag(data)
+
+    def __rlshift__(self, other):
+        return self.generate_flag(other)
+
+    def __class_getitem__(cls, item):
+        return cls(item)
 
     def _get_raw_flag(self, sub_tags: list[str], data):
         return Flag(self, sub_tags, data)
@@ -28,6 +34,7 @@ class FlagFactory:
         flags = None
         if isinstance(data, Flag):
             flags = data.tags
+            data = data.data
 
         return self._get_raw_flag(flags if flags is not None else [], data)
 
@@ -41,4 +48,7 @@ class Flag:
         self.data = data
         self.tag = self._factory.flag_tag
         self._sub_tags = sub_tags
-        self.tags = self._sub_tags + list(self.tag)
+        self.tags = self._sub_tags + [self.tag]
+
+
+TEST_FLAG = FlagFactory["test"]
