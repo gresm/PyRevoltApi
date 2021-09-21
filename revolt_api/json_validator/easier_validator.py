@@ -4,7 +4,8 @@ Clearer api for json_validator
 
 from __future__ import annotations
 
-from .validator import *
+from .validator import StringValidator, IntValidator, ArrayValidator, LITERAL_TYPES, FormattedDict, FormattedList,\
+    FloatValidator, UnionValidator, BaseValidator as _BaseValidator
 
 
 class FlagFactory:
@@ -67,9 +68,20 @@ class Flag:
         return self
 
 
+_Factory = FlagFactory
+
+
+Int = _Factory["int"]
+Float = _Factory["float"]
+Array = _Factory["array"]
+OptionalDictElement = _Factory["dict_optional_element"]
+
+
 def convert(value):
     def convert_with_correct(data):
-        if isinstance(data, dict):
+        if isinstance(data, _BaseValidator):
+            return data
+        elif isinstance(data, dict):
             return convert_dict(data)
         elif isinstance(data, list):
             return convert_list(data)
@@ -88,28 +100,86 @@ def convert(value):
         elif isinstance(data, Flag):
             return convert_flag(data)
 
+        raise ValueError(f"invalid 'data' argument: {data}")
+
     def convert_flag(data: Flag):
-        pass
+        if data.tag == "int":
+            if len(data.configs) > 0:
+                return convert_int(data.configs)
+            else:
+                return int
+        elif data.tag == "float":
+            if len(data.configs) > 0:
+                return convert_float(data.configs)
+            else:
+                return float
+        elif data.tag == "array":
+            return convert_array(data)
 
     def convert_dict(data: dict):
-        pass
+        optionals = []
+        dict_keys_values = []
+        for key in data:
+            optional_key = False
+            d_val = data[key]
+
+            if isinstance(key, Flag):
+                if key.tag == "dict_optional_element":
+                    optionals.append(key.data)
+                    optional_key = True
+
+                key = key.data
+
+            if isinstance(d_val, Flag):
+                if d_val.tag == "dict_optional_element":
+                    if not optional_key:
+                        optionals.append(key)
+                    d_val = d_val.data
+
+            dict_keys_values.append((key, convert_with_correct(d_val)))
+
+        dct_settings = (*dict_keys_values, optionals)
+
+        return FormattedDict[dct_settings]
 
     def convert_list(data: list):
-        pass
+        lst = []
+        for el in data:
+            lst.append(convert_with_correct(el))
+        return FormattedList[tuple(lst)]
 
-    def convert_array(data):
-        pass
+    def convert_array(data: Flag):
+        return ArrayValidator[convert_with_correct(data.data)]
 
     def convert_string(data: str):
         return StringValidator[data]
 
     def convert_int(data: tuple[int, ...]):
-        pass
+        return IntValidator[data]
 
     def convert_float(data: tuple[int, ...]):
-        pass
+        return FloatValidator[data]
 
     def convert_bool(data: bool):
         return type(data)
 
     return convert_with_correct(value)
+
+
+def union(t1, t2, *a):
+    u_lst = [convert(t1), convert(t2)]
+
+    for el in a:
+        u_lst.append(convert(el))
+
+    return UnionValidator[tuple(u_lst)]
+
+
+__all__ = [
+    "convert",
+    "union",
+    "Int",
+    "Float",
+    "Array",
+    "OptionalDictElement"
+]
