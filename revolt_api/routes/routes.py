@@ -1,13 +1,28 @@
 class Platform:
-    pass
+    class Core:
+        pass
+
+    class OnBoarding:
+        pass
 
 
 class Auth:
-    pass
+    class Account:
+        pass
+
+    class Session:
+        pass
 
 
 class User:
-    pass
+    class UserInformation:
+        pass
+
+    class DirectMessaging:
+        pass
+
+    class Relationships:
+        pass
 
 
 class Bot:
@@ -15,15 +30,45 @@ class Bot:
 
 
 class Channel:
-    pass
+    class ChannelInformation:
+        pass
+
+    class ChannelInvites:
+        pass
+
+    class ChannelPermissions:
+        pass
+
+    class Messaging:
+        pass
+
+    class Groups:
+        pass
+
+    class Voice:
+        pass
 
 
 class Server:
-    pass
+    class ServerInformation:
+        pass
+
+    class ServerMembers:
+        pass
+
+    class ServerPermissions:
+        pass
 
 
 class Miscellaneous:
-    pass
+    class Invites:
+        pass
+
+    class Sync:
+        pass
+
+    class WebPush:
+        pass
 
 
 __all__ = [
