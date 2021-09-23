@@ -1,6 +1,6 @@
 from .errors import *
 from . import errors
-from .raw_rest_api import routes
+from . import rest_api
 
 base_url = "https://api.revolt.com/"
 
@@ -17,5 +17,6 @@ def get_url():
 __all__ = [
     "set_url",
     "get_url",
+    "rest_api",
     *errors.__all__
 ]
