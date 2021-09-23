@@ -1,8 +1,6 @@
 from .errors import *
 from . import errors
-from . import raw_api
-from . import routes
-
+from .raw_rest_api import routes
 
 base_url = "https://api.revolt.com/"
 

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import warnings
 
-from ..raw_api import ValidatedRequest
+from .. import ValidatedRequest
 
 
 class Route:
@@ -18,7 +18,7 @@ class Route:
 
 def run_route(route: Route, token: str = None, json: dict | None = None, as_bot: bool = False,
               url_kwargs: dict[str, str] = None):
-    from .. import get_url
+    from ... import get_url
 
     if not route.can_be_bot and as_bot:
         warnings.warn("Function was run with 'as_bot' argument set to True, but current route doesn't allow to run as "
