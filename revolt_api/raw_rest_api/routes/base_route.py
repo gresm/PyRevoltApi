@@ -2,8 +2,6 @@ from __future__ import annotations
 
 import warnings
 
-from .. import ValidatedRequest
-
 
 class Route:
     def __init__(self, url: str, method: str, with_auth: bool = True, can_be_bot: bool = True,
@@ -18,6 +16,7 @@ class Route:
 
 def run_route(route: Route, token: str = None, json: dict | None = None, as_bot: bool = False,
               url_kwargs: dict[str, str] = None):
+    from .. import ValidatedRequest
     from ... import get_url
 
     if not route.can_be_bot and as_bot:
@@ -40,5 +39,5 @@ def run_route(route: Route, token: str = None, json: dict | None = None, as_bot:
 
 __all__ = [
     "Route",
-    "run_route"
+    "run_route",
 ]
