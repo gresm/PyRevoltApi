@@ -56,8 +56,14 @@ class User:
         UnblockUser = Route(url="users/:user/block", method="DELETE", with_auth=True, can_be_bot=False)
 
 
-class Bot:
-    pass
+class AccountBots:
+    CreateBot = Route(url="bots/create", method="POST", with_auth=True, can_be_bot=False)
+    FetchOwnedBots = Route(url="bots/@me", method="GET", with_auth=True, can_be_bot=False)
+    FetchBot = Route(url="bots/:bot", method="GET", with_auth=True, can_be_bot=False)
+    EditBot = Route(url="bots/:bot", method="PATCH", with_auth=True, can_be_bot=False)
+    DeleteBot = Route(url="bots/:bot", method="DELETE", with_auth=True, can_be_bot=False)
+    FetchPublicBot = Route(url="bots/:bot/invite", method="GET", with_auth=True, can_be_bot=False)
+    InvitePublicBot = Route(url="bots/:bot/invite", method="POST", with_auth=True, can_be_bot=False)
 
 
 class Channel:
@@ -106,7 +112,7 @@ __all__ = [
     "Platform",
     "Auth",
     "User",
-    "Bot",
+    "AccountBots",
     "Channel",
     "Server",
     "Miscellaneous"
