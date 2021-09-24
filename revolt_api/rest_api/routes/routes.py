@@ -68,22 +68,35 @@ class AccountBots:
 
 class Channel:
     class ChannelInformation:
-        pass
+        FetchChannel = Route(url="channels/:channel", method="GET", with_auth=True)
+        EditChannel = Route(url="channels/:channel", method="PATCH", with_auth=True)
+        CloseChannel = Route(url="channels/:channel", method="DELETE", with_auth=True)
 
     class ChannelInvites:
-        pass
+        CreateInvite = Route(url="channels/:channel/invites", method="POST", with_auth=True)
 
     class ChannelPermissions:
-        pass
+        SetRolePermission = Route(url="channels/:channel/permissions/:role", method="PUT", with_auth=True)
+        SetDefaultPermission = Route(url="channels/:channel/permissions/default", method="PUT", with_auth=True)
 
     class Messaging:
-        pass
+        SendMessage = Route(url="channels/:channel/messages", method="POST", with_auth=True)
+        FetchMessages = Route(url="channels/:channel/messages", method="GET", with_auth=True)
+        FetchMessage = Route(url="channels/:channel/messages/:message", method="GET", with_auth=True)
+        EditMessage = Route(url="channels/:channel/messages/:message", method="PATCH", with_auth=True)
+        DeleteMessage = Route(url="channels/:channel/messages/:message", method="DELETE", with_auth=True)
+        PollMessageChanges = Route(url="channels/:channel/messages/stale", method="POST", with_auth=True)
+        SearchForMessages = Route(url="channels/:channel/messages/search", method="POST", with_auth=True)
+        AcknowledgeMessage = Route(url="channels/:channel/ack/:message", method="PUT", with_auth=True, can_be_bot=False)
 
     class Groups:
-        pass
+        CreateGroup = Route(url="channels/create", method="POST", with_auth=True, can_be_bot=False)
+        FetchGroupMembers = Route(url="channels/:channel/members", method="GET", with_auth=True)
+        AddGroupMember = Route(url="channels/:channel/members", method="PUT", with_auth=True, can_be_bot=False)
+        RemoveGroupMember = Route(url="channels/:channel/members", method="DELETE", with_auth=True, can_be_bot=False)
 
     class Voice:
-        pass
+        JoinCall = Route(url="channels/:channel/join_call", method="POST", with_auth=True)
 
 
 class Server:
