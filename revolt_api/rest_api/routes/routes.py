@@ -22,18 +22,38 @@ class Auth:
         ChangeEmail = Route(url="auth/account/change/email", method="PATCH", with_auth=True, can_be_bot=False)
 
     class Session:
-        Login = Route(url="https://api.revolt.chat/auth/session/login", method="POST", with_auth=False, can_be_bot=False)
+        Login = Route(url="auth/session/login", method="POST", with_auth=False, can_be_bot=False)
+        Logout = Route(url="auth/session/logout", method="POST", with_auth=False, can_be_bot=False)
+        EditSession = Route(url="auth/session/:session", method="PATCH", with_auth=True, can_be_bot=False)
+        DeleteSession = Route(url="auth/session/:session", method="DELETE", with_auth=True, can_be_bot=False)
+        FetchSessions = Route(url="auth/session/all", method="GET", with_auth=True, can_be_bot=False)
+        DeleteAllSessions = Route(url="auth/session/all", method="DELETE", with_auth=True, can_be_bot=False)
 
 
 class User:
     class UserInformation:
-        pass
+        FetchUser = Route(url="users/:user", method="GET", with_auth=True, can_be_bot=True)
+        EditUser = Route(url="users/@me", method="PATCH", with_auth=True, can_be_bot=True)
+        ChangeUsername = Route(url="users/@me/username", method="PATCH", with_auth=True, can_be_bot=False)
+        FetchUserProfile = Route(url="users/:user/profile", method="GET", with_auth=True, can_be_bot=True)
+        FetchDefaultAvatar = Route(url="users/:user/default_avatar", method="GET", with_auth=False)
+        FetchMutualFriends = Route(url="users/:user/mutual", method="GET", with_auth=True, can_be_bot=True)
 
     class DirectMessaging:
-        pass
+        FetchDirectMessageChannels = Route(url="users/dms", method="GET", with_auth=True, can_be_bot=True)
+        OpenDirectMessage = Route(url="users/:user/dm", method="GET", with_auth=True, can_be_bot=True)
 
     class Relationships:
-        pass
+        FetchRelationships = Route(url="users/relationships", method="GET", with_auth=True, can_be_bot=False)
+        FetchRelationship = Route(url="users/:user/relationship", method="GET", with_auth=True, can_be_bot=False)
+        SendFriendRequestOrAcceptRequest = Route(
+            url="users/:username/friend", method="PUT", with_auth=True, can_be_bot=False
+        )
+        DenyFriendRequestRemoveFriend = Route(
+            url="users/:username/friend", method="DELETE", with_auth=True, can_be_bot=False
+        )
+        BlockUser = Route(url="users/:user/block", method="PUT", with_auth=True, can_be_bot=False)
+        UnblockUser = Route(url="users/:user/block", method="DELETE", with_auth=True, can_be_bot=False)
 
 
 class Bot:
