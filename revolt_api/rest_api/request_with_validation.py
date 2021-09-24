@@ -44,7 +44,8 @@ class ValidatedRequest:
 
     @api_error(cause="Invalid arguments: json not passed or data is not valid json string")
     def _add_nonce(self, dct: dict | None, with_ulid: bool = False, pos: str = "nonce"):
-        print("fixing")
+        if not self.with_auth:
+            return False
 
         if not with_ulid:
             return dct

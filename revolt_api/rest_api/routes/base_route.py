@@ -5,7 +5,7 @@ import warnings
 
 class Route:
     def __init__(self, url: str, method: str, with_auth: bool = True, can_be_bot: bool = True,
-                 params: dict[str, str] = None, with_ulid: bool = False):
+                 with_ulid: bool = False, params: dict[str, str] = None):
         self.url = url
         self.method = method
         self.with_auth = with_auth
@@ -15,7 +15,7 @@ class Route:
 
 
 def run_route(route: Route, token: str = None, json: dict | None = None, as_bot: bool = False,
-              url_kwargs: dict[str, str] = None):
+              url_kwargs: dict[str, str] = None, data: str = ""):
     from .. import ValidatedRequest
     from ... import get_url
 
@@ -30,7 +30,7 @@ def run_route(route: Route, token: str = None, json: dict | None = None, as_bot:
     )
 
     ret.request(
-        json=json, data="",
+        json=json, data=data,
         params=route.params, url=route.url,
         path_kwargs=url_kwargs, with_ulid=route.with_ulid
     )
