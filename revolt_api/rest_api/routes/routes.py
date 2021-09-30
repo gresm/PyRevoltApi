@@ -101,13 +101,36 @@ class Channel:
 
 class Server:
     class ServerInformation:
-        pass
+        FetchServer = Route(url="servers/:server", method="GET", with_auth=True, can_be_bot=True)
+        EditServer = Route(url="servers/:server", method="PATCH", with_auth=True, can_be_bot=True)
+        DeleteOrLeaveServer = Route(url="servers/:server", method="DELETE", with_auth=True, can_be_bot=True)
+        CreateServer = Route(url="servers/create", method="POST", with_auth=True, can_be_bot=False)
+        CreateChannel = Route(url="servers/:server/channels", method="POST", with_auth=True, can_be_bot=True)
+        FetchInvites = Route(url="servers/:server/invites", method="GET", with_auth=True, can_be_bot=True)
+        MarkServerAsRead = Route(url="servers/:server/ack", method="PUT", with_auth=True, can_be_bot=False)
 
     class ServerMembers:
-        pass
+        FetchMember = Route(url="servers/:server/members/:member", method="GET", with_auth=True, can_be_bot=True)
+        EditMember = Route(url="servers/:server/members/:member", method="PATCH", with_auth=True, can_be_bot=True)
+        KickMember = Route(url="servers/:server/members/:member", method="DELETE", with_auth=True, can_be_bot=True)
+        FetchMembers = Route(url="servers/:server/members", method="GET", with_auth=False, can_be_bot=True)
+        BanUser = Route(url="servers/:server/bans/:member", method="PUT", with_auth=True, can_be_bot=True)
+        UnbanUser = Route(url="servers/:server/bans/:member", method="DELETE", with_auth=True, can_be_bot=True)
+        FetchBans = Route(url="servers/:server/bans", method="GET", with_auth=True, can_be_bot=True)
 
     class ServerPermissions:
-        pass
+        SetRolePermission = Route(
+            url="servers/:server/permissions/:role", method="PUT", with_auth=True, can_be_bot=True
+        )
+
+        SetDefaultPermission = Route(
+            url="servers/:server/permissions/default", method="PUT", with_auth=True, can_be_bot=True
+
+        )
+
+        CreateRole = Route(url="servers/:server/roles", method="POST", with_auth=True, can_be_bot=True)
+        EditRole = Route(url="servers/:server/roles/:role", method="PATCH", with_auth=True, can_be_bot=True)
+        DeleteRole = Route(url="servers/:server/roles/:role", method="PATCH", with_auth=True, can_be_bot=True)
 
 
 class Miscellaneous:
